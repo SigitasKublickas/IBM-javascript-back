@@ -3,8 +3,6 @@ import cors from "cors";
 import axios from "axios";
 import mongoose from "mongoose";
 
-import { MongoClient, ServerApiVersion } from "mongodb";
-
 const uri =
   "mongodb+srv://Ibm-task:Yo4JTcCcGGs9CZlJ@sigitas.pa12i8q.mongodb.net/?retryWrites=true&w=majority";
 
@@ -56,47 +54,46 @@ app.post("/selectedCoins", async (req: Request, res: Response) => {
 });
 
 app.get("/getTrandingCoins", async (req: Request, res: Response) => {
-  const tranding = await axios.get(
-    "https://api.coingecko.com/api/v3/search/trending"
-  );
-  if (tranding.status === 200) {
+  try {
+    const tranding = await axios.get(
+      "https://api.coingecko.com/api/v3/search/trending"
+    );
     res.json({ success: true, coins: tranding.data.coins });
-  } else {
-    res.json({ success: false, coins: [] });
+  } catch (err) {
+    res.json({ success: false, coins: [], err: err });
   }
 });
 
 app.post("/search", async (req: Request, res: Response) => {
-  const coins = await axios.get("https://api.coingecko.com/api/v3/search", {
-    params: { query: req.body.input },
-  });
-  if (coins.status === 200) {
+  try {
+    const coins = await axios.get("https://api.coingecko.com/api/v3/search", {
+      params: { query: req.body.input },
+    });
     res.json({ success: true, coins: coins.data.coins });
-  } else {
-    res.json({ success: false, coins: [] });
+  } catch (err) {
+    res.json({ success: false, coins: [], err: err });
   }
 });
+
 app.post("/getCoin", async (req: Request, res: Response) => {
-  const coin = await axios.get(
-    `https://api.coingecko.com/api/v3/coins/${req.body.id}`
-  );
-  if (coin.status === 200) {
-    if (coin) {
-      res.json({ success: true, coin: coin.data });
-    } else {
-      res.json({ success: false, coin: [] });
-    }
+  try {
+    const coin = await axios.get(
+      `https://api.coingecko.com/api/v3/coins/${req.body.id}`
+    );
+    res.json({ success: true, coin: coin.data });
+  } catch (err) {
+    res.json({ success: false, coin: [], err: err });
   }
 });
 
 app.get("/getBtcToUsd", async (req: Request, res: Response) => {
-  const usd = await axios.get(
-    `https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd`
-  );
-  if (usd.status === 200) {
+  try {
+    const usd = await axios.get(
+      `https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd`
+    );
     res.json({ success: true, usd: usd.data.bitcoin.usd });
-  } else {
-    res.json({ success: false, usd: [] });
+  } catch (err) {
+    res.json({ success: false, usd: [], err: err });
   }
 });
 
