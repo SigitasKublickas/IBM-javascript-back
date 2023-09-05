@@ -4,7 +4,6 @@ import axios from "axios";
 import mongoose from "mongoose";
 
 import { MongoClient, ServerApiVersion } from "mongodb";
-import { UserModal } from "./users.js";
 
 const uri =
   "mongodb+srv://Ibm-task:Yo4JTcCcGGs9CZlJ@sigitas.pa12i8q.mongodb.net/?retryWrites=true&w=majority";
